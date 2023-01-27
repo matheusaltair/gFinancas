@@ -4,7 +4,7 @@ export default {
     primary_light: 'rgba(20, 70, 160, 0.3)',
 
     secondary: '#FF8000',
-    secondary_light: 'rgba(219, 48, 105, 0.3)',
+    secondary_light: 'rgba(255,128,0, 0.3)',
 
     success: '#009900',
     success_light: 'rgba(0, 153, 0, 0.5)',

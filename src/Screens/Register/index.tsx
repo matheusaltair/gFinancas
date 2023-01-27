@@ -10,8 +10,8 @@ import { Container, Fields, Form, Header, Title, TransactionType } from './style
 export function Register() {
   const [transactionType, setTransactionType] = useState('')
   const [category, setCategory] = useState({
-    name: 'category',
-    key: 'Categoria'
+    name: 'Categoria',
+    key: 'category'
   })
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
@@ -50,7 +50,7 @@ export function Register() {
               isActive={transactionType === 'down'}
             />
           </TransactionType>
-          <InputSelect title='Categoria' onPress={() => HandleOpenModal()} />
+          <InputSelect title={category.name} onPress={() => HandleOpenModal()} />
 
         </Fields>
         <Button title='Enviar' />

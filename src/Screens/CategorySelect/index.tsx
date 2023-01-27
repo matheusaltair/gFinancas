@@ -27,7 +27,9 @@ export function CategorySelect({ category, setCategory, setCloseCategoryModal }:
         style={{ flex: 1, width: '100%' }}
         keyExtractor={item => item.key}
         renderItem={({ item }) => (
-          <Category>
+          <Category onPress={() => setCategory(item)}
+            isActive={category.key === item.key}
+          >
             <Icon name={item.icon} />
             <Name>
               {item.name}
