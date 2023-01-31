@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Modal } from 'react-native';
 import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Button } from '../../components/Form/Button';
 import { Input } from '../../components/Form/Input';
 import { InputForm } from '../../components/Form/InputForm';
@@ -10,12 +11,23 @@ import { TransactionTypeButton } from '../../components/Form/TransactionTypeButt
 import { CategorySelect } from '../CategorySelect';
 import { Container, Fields, Form, Header, Title, TransactionType } from './styles'
 
+
 interface FormData {
   name: string;
   amount: string;
 }
 
+const schema = Yup.object().shape({
+  name: Yup.string().required('O nome é obrigatório'),
+  amount: Yup.number().typeError('Digite um número').required('O valor é obrigatório').positive('O valor deve ser positivo')
+})
+
 export function Register() {
+
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  })
+
   const [transactionType, setTransactionType] = useState('')
   const [category, setCategory] = useState({
     name: 'Categoria',
@@ -23,7 +35,6 @@ export function Register() {
   })
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
-  const { control, handleSubmit } = useForm()
 
   function handleRegister(form: FormData) {
     const data = {
@@ -57,11 +68,14 @@ export function Register() {
             name='name'
             control={control}
             placeholder='Nome'
+            error={errors.name && errors.name.message}
           />
           <InputForm
             name='amount'
             control={control}
             placeholder='Preço'
+            error={errors.amount && errors.amount.message}
+
           />
           <TransactionType>
             <TransactionTypeButton
@@ -88,7 +102,7 @@ export function Register() {
         <CategorySelect
           category={category}
           setCategory={setCategory}
-          setCloseCategoryModal={() => HandleCloseModal()} />
+          setCloseCategoryModal={HandleCloseModal} />
       </Modal>
 
     </Container>

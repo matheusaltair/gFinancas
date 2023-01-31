@@ -8,15 +8,20 @@
 import React from 'react';
 import theme from './src/global/styles/theme';
 import { ThemeProvider } from 'styled-components';
-import { Dashboard } from './src/Screens/Dashboard';
-import { Register } from './src/Screens/Register';
-import { CategorySelect } from './src/Screens/CategorySelect';
+
+import { NavigationContainer } from '@react-navigation/native';
+import AppRoutes from './src/routes/app.routes';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Register />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider theme={theme}>
+        <NavigationContainer >
+          <AppRoutes />
+        </NavigationContainer>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   )
 }
 
