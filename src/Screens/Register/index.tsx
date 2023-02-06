@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { Modal } from 'react-native';
+
+import { useForm } from 'react-hook-form';
+import uuid from 'react-native-uuid'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
-import { yupResolver } from '@hookform/resolvers/yup'
 import { Button } from '../../components/Form/Button';
 import { InputForm } from '../../components/Form/InputForm';
 import { InputSelect } from '../../components/Form/InputSelect';
@@ -26,7 +29,9 @@ const schema = Yup.object().shape({
 export function Register() {
   const dataKey = '@gFinancas:transaction'
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { navigate } = useNavigation()
+
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   })
 
@@ -40,12 +45,13 @@ export function Register() {
 
   async function handleRegister(form: FormData) {
     const newData = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionType,
-      category: category.key
+      category: category.key,
+      transactionData: new Date()
     }
-    console.log(newData)
 
     try {
       const data = await AsyncStorage.getItem(dataKey)
@@ -57,6 +63,16 @@ export function Register() {
       ]
 
       await AsyncStorage.setItem(dataKey, JSON.stringify(AllData))
+
+
+      reset()
+      setTransactionType('')
+      setCategory({
+        name: 'Categoria',
+        key: 'category'
+      })
+
+      navigate('Listagem', { data: AllData })
 
     } catch (error) {
       console.log(error)
