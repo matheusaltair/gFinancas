@@ -5,7 +5,7 @@ import Feather from 'react-native-vector-icons/Feather'
 import theme from '../../global/styles/theme';
 
 interface TypeProps {
-  type: 'positive' | 'negative'
+  type: 'up' | 'down'
 }
 
 export const CardView = styled(View)`
@@ -21,7 +21,7 @@ export const Amount = styled(Text) <TypeProps>`
   font-size: ${RFValue(20)}px;
   margin-top: ${RFValue(6)}px;
   color: ${({ theme, type }) =>
-    type === 'positive' ? theme.colors.success : theme.colors.danger}
+    type === 'up' ? theme.colors.success : theme.colors.danger};
 `
 export const Footer = styled(View)`
   flex-direction: row;

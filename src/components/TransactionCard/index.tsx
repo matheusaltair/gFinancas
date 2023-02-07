@@ -1,17 +1,13 @@
 import React from 'react';
+import { categories } from '../../utils/categories';
 import { CardView, Title, Amount, Name, TransactionData, Footer, CategoryView, Icon } from './styles';
 
-interface Category {
-  name: string,
-  icon: string
-}
-
 export interface TransactionCardProps {
-  title: string,
+  name: string,
   amount: string,
-  category: Category,
+  category: string,
   transactionData: string,
-  type: 'positive' | 'negative'
+  type: 'up' | 'down'
 }
 
 interface Props {
@@ -21,17 +17,21 @@ interface Props {
 export function TransactionCard({
   data
 }: Props) {
+  const [category] = categories.filter(
+    item => item.key === data.category
+  )
+
   return (
     <CardView>
-      <Title>{data.title}</Title>
+      <Title>{data.name}</Title>
       <Amount type={data.type}>
-        {data.type === 'negative' && "-"}
+        {data.type === 'down' && "- "}
         {data.amount}
       </Amount>
       <Footer>
         <CategoryView>
-          <Icon name={data.category.icon} size={20} />
-          <Name>{data.category.name}</Name>
+          <Icon name={category.icon} size={20} />
+          <Name>{category.name}</Name>
         </CategoryView>
 
         <TransactionData>{data.transactionData}</TransactionData>

@@ -27,7 +27,6 @@ const schema = Yup.object().shape({
 })
 
 export function Register() {
-  const dataKey = '@gFinancas:transaction'
 
   const { navigate } = useNavigation()
 
@@ -35,7 +34,7 @@ export function Register() {
     resolver: yupResolver(schema)
   })
 
-  const [transactionType, setTransactionType] = useState('')
+  const [type, setType] = useState('')
   const [category, setCategory] = useState({
     name: 'Categoria',
     key: 'category'
@@ -48,12 +47,14 @@ export function Register() {
       id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
+      type,
       category: category.key,
       transactionData: new Date()
     }
 
     try {
+      const dataKey = '@gFinancas:transaction'
+
       const data = await AsyncStorage.getItem(dataKey)
       const currentData = data ? JSON.parse(data) : []
 
@@ -66,30 +67,21 @@ export function Register() {
 
 
       reset()
-      setTransactionType('')
+      setType('')
       setCategory({
         name: 'Categoria',
         key: 'category'
       })
 
-      navigate('Listagem', { data: AllData })
+      navigate('Listagem')
 
     } catch (error) {
       console.log(error)
     }
   }
 
-  useEffect(() => {
-    async function getAsync() {
-
-      const Items = await AsyncStorage.getItem(dataKey)
-      console.log(JSON.parse(Items!))
-    }
-    getAsync()
-
-  }, []);
   function handleTransactionType(type: 'up' | 'down') {
-    setTransactionType(type)
+    setType(type)
   }
 
   function HandleOpenModal() {
@@ -123,13 +115,13 @@ export function Register() {
               title='Income'
               type='up'
               onPress={() => handleTransactionType('up')}
-              isActive={transactionType === 'up'}
+              isActive={type === 'up'}
             />
             <TransactionTypeButton
               title='Outcome'
               type='down'
               onPress={() => handleTransactionType('down')}
-              isActive={transactionType === 'down'}
+              isActive={type === 'down'}
             />
           </TransactionType>
           <InputSelect title={category.name} onPress={() => HandleOpenModal()} />

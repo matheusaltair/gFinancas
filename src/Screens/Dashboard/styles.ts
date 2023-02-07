@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { Image, Text, View, ScrollView, FlatList } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { DataListProps } from '.';
-
 
 export const Body = styled(View)`
     flex: 1;
@@ -26,11 +24,11 @@ export const UserNameView = styled(View)`
     margin-left: 20px;
 `
 export const UserGreeting = styled(Text)`
-    font-size: 16;
+    font-size: ${RFValue(16)}px;
     color: ${({ theme }) => theme.colors.title};
 `
 export const UserName = styled(Text)`
-    font-size: 16;
+    font-size: ${RFValue(16)}px;
     font-weight: bold;
     color: ${({ theme }) => theme.colors.title};
 `
@@ -43,7 +41,7 @@ export const Scroller = styled(ScrollView).attrs({
     position: absolute;
     margin-top: ${RFPercentage(12)}px;
 `
-export const TransactionList = styled(FlatList as new () => FlatList<DataListProps>)`
+export const TransactionList = styled(FlatList)`
 
 `
 export const Transactions = styled(View)`
@@ -52,7 +50,11 @@ export const Transactions = styled(View)`
     margin-top: ${RFPercentage(11)}px;
 `
 export const Title = styled(Text)`
-    font-size: 17px;
+    font-size: ${RFValue(17)}px;
     color: ${({ theme }) => theme.colors.text};
     margin-bottom: ${RFPercentage(2)}px;
+`
+export const ActivityContainer = styled(View)`
+    flex: 1;
+    justify-content: center;
 `
