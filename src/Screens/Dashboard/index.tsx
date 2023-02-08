@@ -12,13 +12,14 @@ export interface DataListProps extends TransactionCardProps {
 }
 
 interface HighlightValue {
-  amount: string
+  amount: string,
+  lastTransaction: string
 }
 
 interface HighlightProps {
   inputs: HighlightValue,
   outputs: HighlightValue,
-  total: HighlightValue
+  total: HighlightValue,
 }
 
 export function Dashboard() {
@@ -26,6 +27,15 @@ export function Dashboard() {
   const [data, setData] = useState<DataListProps>()
   const [loading, setLoading] = useState<boolean>(true)
   const [highlightValues, setHighlightValues] = useState<HighlightProps>({} as HighlightProps)
+
+  function handleFormattedLastDate(collection: DataListProps[], type: 'up' | 'down') {
+    const lastTransactions = new Date(Math.max.apply(Math,
+      collection.filter((transaction: DataListProps) => transaction.type === type)
+        .map((transaction: DataListProps) => new Date(transaction.transactionData).getTime())))
+
+    return `${lastTransactions.getDate()} de ${lastTransactions.toLocaleString('pt-BR', { month: 'long' })}`
+
+  }
 
 
   async function loadData() {
@@ -38,7 +48,16 @@ export function Dashboard() {
 
     const transactions = response ? JSON.parse(response) : []
 
+    const lastTransactionsInputs = handleFormattedLastDate(transactions, 'up')
+    const lastTransactionsOutputs = handleFormattedLastDate(transactions, 'down')
+    const totalLastTransaction = `01 a ${lastTransactionsOutputs}`
+
+    console.log('lastentries', lastTransactionsInputs)
+    console.log('last output', lastTransactionsOutputs)
+
+
     const formattedTransactions = transactions.map((item: DataListProps) => {
+
 
       if (item.type === 'up') {
         inputTotal += Number(item.amount)
@@ -74,22 +93,28 @@ export function Dashboard() {
         amount: inputTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        })
+        }),
+        lastTransaction: `Ultima entrada dia ${lastTransactionsInputs}`
       },
       outputs: {
         amount: outputTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        })
+        }),
+        lastTransaction: `Ultima saída dia ${lastTransactionsOutputs}`
+
       },
       total: {
         amount: total.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        })
+        }),
+        lastTransaction: totalLastTransaction
       },
 
     })
+
+
     setData(formattedTransactions)
     setLoading(false)
 
@@ -118,9 +143,21 @@ export function Dashboard() {
               </User>
             </Header>
             <Scroller>
-              <HighlightCard title='Entrada' amount={highlightValues.inputs.amount} lastTransaction='ultima entrada 12 de Abril' type='up' />
-              <HighlightCard title='Saída' amount={highlightValues.outputs.amount} lastTransaction='ultima entrada 12 de Abril' type='down' />
-              <HighlightCard title='Total' amount={highlightValues.total.amount} lastTransaction='ultima entrada 12 de Abril' type='total' />
+              <HighlightCard
+                title='Entrada'
+                amount={highlightValues.inputs.amount}
+                lastTransaction={highlightValues.inputs.lastTransaction}
+                type='up' />
+              <HighlightCard
+                title='Saída'
+                amount={highlightValues.outputs.amount}
+                lastTransaction={highlightValues.outputs.lastTransaction}
+                type='down' />
+              <HighlightCard
+                title='Total'
+                amount={highlightValues.total.amount}
+                lastTransaction={highlightValues.total.lastTransaction}
+                type='total' />
             </Scroller>
             <Transactions>
               <Title>Operações</Title>
