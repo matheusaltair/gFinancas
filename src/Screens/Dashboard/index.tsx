@@ -52,10 +52,6 @@ export function Dashboard() {
     const lastTransactionsOutputs = handleFormattedLastDate(transactions, 'down')
     const totalLastTransaction = `01 a ${lastTransactionsOutputs}`
 
-    console.log('lastentries', lastTransactionsInputs)
-    console.log('last output', lastTransactionsOutputs)
-
-
     const formattedTransactions = transactions.map((item: DataListProps) => {
 
 

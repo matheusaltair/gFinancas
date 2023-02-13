@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Image, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import Feather from 'react-native-vector-icons/Feather'
 
