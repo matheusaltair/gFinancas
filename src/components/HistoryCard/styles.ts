@@ -9,7 +9,8 @@ interface ContainerProps {
 export const Container = styled(View) <ContainerProps>`
   width: 100%;
   padding: 13px 24px;
-
+  margin-bottom: 10px; 
+  
   flex-direction: row;
   justify-content: space-between;
 

@@ -17,6 +17,7 @@ export default {
     title: '#ffffff',
     text: '#3C3C3B',
     text_light: 'rgba(60, 60, 59, 0.4)',
-    white: '#ffffff'
+    white: '#ffffff',
+    black: '#000000'
   }
 }
