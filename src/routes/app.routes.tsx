@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Dashboard } from '../Screens/Dashboard';
 import { Register } from '../Screens/Register';
 import { Resume } from '../Screens/Resume';
+import { SignIn } from '../Screens/SignIn';
 import { useTheme } from 'styled-components';
 
 const { Navigator, Screen } = createBottomTabNavigator();

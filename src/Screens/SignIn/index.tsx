@@ -7,18 +7,18 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export function SignIn() {
+  const { navigate } = useNavigation()
   const { user } = useAuth()
   const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
+  const [userInfo, setUserInfo] = useState();
 
   async function _signIn() {
     try {
       await GoogleSignin.hasPlayServices();
-      const { accessToken, idToken } = await GoogleSignin.signIn();
-      console.log(accessToken)
-      console.log(idToken)
+      const userInfo = await GoogleSignin.signIn();
 
       setloggedIn(true);
     } catch (error) {
@@ -34,6 +34,8 @@ export function SignIn() {
       } else {
         // algum outro erro ocorreu
       }
+    } finally {
+      console.log(userInfo)
     }
   };
   async function signOut() {
@@ -53,6 +55,13 @@ export function SignIn() {
       webClientId:
         '418977770929-g9ou7r9eva1u78a3anassxxxxxxx.apps.googleusercontent.com', // o ID do client do tipo WEB para seu servidor (necessário para verificar o ID do usuário e o acesso off-line)
       offlineAccess: true, // se você deseja acessar a API do Google API em nome do usuário DE SEU SERVIDOR
+      hostedDomain: '', // specifies a hosted domain restriction
+      forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+      accountName: '', // [Android] specifies an account name on the device that should be used
+      iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+      googleServicePlistPath: '', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
+      openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
+      profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
     });
   }, []);
 
@@ -65,7 +74,7 @@ export function SignIn() {
       </Header>
       <Footer>
         <ButtonContainer>
-          <LoginSocialButton onPress={_signIn}>
+          <LoginSocialButton onPress={() => navigate('Dashboard')}>
             <IconSocial name='google' />
             <TextButtonLoginSocial>Entrar com Google</TextButtonLoginSocial>
           </LoginSocialButton>

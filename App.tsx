@@ -24,7 +24,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <NavigationContainer>
           <AuthProvider>
-            <SignIn />
+            <AppRoutes />
           </AuthProvider>
         </NavigationContainer>
       </ThemeProvider>
